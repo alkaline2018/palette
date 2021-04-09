@@ -3,8 +3,63 @@ import re
 
 from pymongo import MongoClient, InsertOne
 from env import config
+import psycopg2 as pg
+import psycopg2.extras
 
 from remove_duplicated import Duplicate_check
+
+class Postgresql:
+    def __init__(self):
+        self.params = config.config()
+
+    def connect(self):
+        self.connection = pg.connect(**self.params, cursor_factory=psycopg2.extras.DictCursor)
+        # self.connection = pg.connect(**self.params)
+
+    def get_connect(self):
+        return self.connection
+
+    def close(self):
+        self.connection.close()
+
+    def execute(self, sql, params={}):
+        with self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor) as self.cursor:
+            self.cursor.execute(sql, params)
+
+    def find_image(self, item):
+        cur = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        # fields = ', '.join(item.keys())
+        values = 'and '.join([x + '=%%(%s)s' % x for x in item])
+        # values2 = ', '.join(['%s=' % x for x in item])
+        # print(fields)
+        print(values)
+        # print(values2)
+        sql = "SELECT * " \
+              "FROM image " \
+              "WHERE %s;" % (values)
+        # print(sql)
+        cur.execute(sql, (item))
+        result = cur.fetchone()
+        return result
+
+    def find_all_image(self):
+        cur = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "SELECT * " \
+              "FROM image;"
+        cur.execute(sql)
+        results = cur.fetchall()
+        cur.close()
+        return results
+
+    def insert_fran_info(self, item):
+        """ insert table  """
+        sum = 0
+        fields = ', '.join(item.keys())
+        values = ', '.join(['%%(%s)s' % x for x in item])
+        sql = 'INSERT INTO tb_xpath_nice_data_201912 (%s) VALUES (%s)' % (fields, values)
+        self.execute(sql, item)
+        sum += 1
+        return sum
 
 class SpspMongoDB:
 

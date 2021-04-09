@@ -49,8 +49,8 @@ if __name__ == "__main__":
     #  DB는 어떤 것으로도 변경 가능하도록 만들어야 한다.
     sp_mongo = db_conn.SpspMongoDB()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
-    _path_list = sys.argv
-    # _path_list = ["","https://img4.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/09/newsis/20210409111902807jhiv.jpg"]
+    # _path_list = sys.argv
+    _path_list = ["","https://img4.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/09/newsis/20210409111902807jhiv.jpg"]
     # 첫번째 argument 는 실행된 파이썬파일 자체라 넘기고 진행
     for v in range(1, len(_path_list)):
         down_image_path = _path_list[v]
