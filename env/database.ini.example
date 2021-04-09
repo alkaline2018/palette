@@ -9,4 +9,5 @@ port=
 host=
 port=
 database=
-collection=
+clct_collection=
+image_collection=

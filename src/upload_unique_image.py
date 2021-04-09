@@ -12,6 +12,8 @@ import sys
 import os
 import shutil
 
+from util import create_directory, get_dir_path_for_now
+
 
 class Duplicate_check(Enum):
     """
@@ -31,17 +33,24 @@ class Duplicate_check(Enum):
     IMAGE_SAVE_ERROR = 6
 
 
+# NOTE: 해당 내용에선 print를 추가하면 안된다.
+#  print 를 통해 다른 언어에서 사용했을 때 image_paths 를 전달하기 때문
 if __name__ == "__main__":
     # 시간 체크 추후 지워도 됌
     stime = time.time()  # 시작시간
+
+    # 경로
+    AB_PATH = os.path.dirname(os.path.abspath(__file__))
+    PARENT_PATH = os.path.join(AB_PATH, "../")
+
     # 이미지 최종 경로 반환
-    results = []
+    image_paths = []
     # NOTE: 이미지 meta 정보 저장 DB
     #  DB는 어떤 것으로도 변경 가능하도록 만들어야 한다.
     sp_mongo = db_conn.SpspMongoDB()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
     _path_list = sys.argv
-    # _path_list = ["","https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/08/chosun/20210408080322607oofo.jpg"]
+    # _path_list = ["","https://img4.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/09/newsis/20210409111902807jhiv.jpg"]
     # 첫번째 argument 는 실행된 파이썬파일 자체라 넘기고 진행
     for v in range(1, len(_path_list)):
         down_image_path = _path_list[v]
@@ -50,16 +59,15 @@ if __name__ == "__main__":
         # get hash
         image_dict = palette.get_defalut_hash_dict()
         # hash 값으로 같은 이미지 찾기
+        # TODO: 필요시 해당 내용은 PG로 변경한다.
         result = sp_mongo.find_image(image_dict)
-        # 현재 파일의 절대경로
-        ab_path = os.path.dirname(os.path.abspath(__file__))
         # 같은 이미지 있다면
         if result:
             # down_image_path 이 url 이 아니라면 해당 파일 삭제
             if not urlOrPath(down_image_path):
-                os.remove(os.path.join(ab_path, "../" + down_image_path))
-            # 해당 결과는 수집 collection 에 반영
-            results.append(result['path'])
+                os.remove(os.path.join(PARENT_PATH + down_image_path))
+            # 같은 이미지의 경로를 반환
+            image_paths.append(result['path'])
         # 같은 이미지 없다면
         else:
             # NOTE: 없으면 서버에서 이미지를 cp or mv해서 save -> save 후 path 받아야함
@@ -68,24 +76,32 @@ if __name__ == "__main__":
             # image_dict['extractColor'] = palette.extract_color()  # 필요시 이미지 추출색 넣음 해당 내용 작성시 속도 느림
             # path 일 경우엔 이미지를 옮기고 url 일 경우엔 이미지를 생성한다. 참고
             new_image_path = ''
+            new_dir_path = get_dir_path_for_now(_parent_path="public/image/", _strftime="%Y/%m/%d/%H/%M/")
+
+            create_directory(PARENT_PATH + new_dir_path)
             if urlOrPath(down_image_path):
-                # url 을 바탕으로 이미지 이름 생성 jpg 저장 이유는 손실저장 방식이라 용량이 절감된다.
+                # url 을 바탕으로 이미지 이름 생성 png 저장 이유는 원본으로 보장된다.
                 # print("url")
-                new_image_path = "public/image/"+uuid.uuid3(uuid.NAMESPACE_URL, down_image_path).__str__()+".jpg"
-                n_path = os.path.join(ab_path, "../" + new_image_path)
+                image_name = uuid.uuid3(uuid.NAMESPACE_URL, down_image_path).__str__() + ".png"
+                new_image_path = new_dir_path + image_name
+                # print(PARENT_PATH + new_image_path)
+                n_path = os.path.join(PARENT_PATH + new_image_path)
                 # 이미지 저장
                 palette.get_image().save(n_path)
             else:
                 # print("path")
                 # temp 이미지 경로를 image로 변경
-                new_image_path = down_image_path.replace("temp", "image")
-                o_path = os.path.join(ab_path, "../"+down_image_path)
-                n_path = os.path.join(ab_path, "../"+new_image_path)
+                image_name = os.path.basename(down_image_path)
+                # print("image_name: ", image_name)
+                # new_image_path = down_image_path.replace("temp", "image")
+                new_image_path = new_dir_path + image_name
+                o_path = os.path.join(PARENT_PATH + down_image_path)
+                n_path = os.path.join(PARENT_PATH + new_image_path)
                 shutil.move(o_path, n_path)
             # NOTE: 아래 내용에서 down_image_path 대신 변경된 new_image_path 로 넣어준다.
             image_dict['path'] = new_image_path
             # HINT: image collection에서 image 정보 insert 후 objectId retrun 받은 걸로 iat collection에 반영
             _id = sp_mongo.insert_image(_image_dict=image_dict)
-            results.append(image_dict['path'])
-    print(results, flush=True)
+            image_paths.append(image_dict['path'])
+    print(image_paths, flush=True)
 

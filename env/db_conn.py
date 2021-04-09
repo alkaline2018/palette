@@ -3,21 +3,20 @@ import re
 
 from pymongo import MongoClient, InsertOne
 from env import config
-import pandas as pd
 
 from remove_duplicated import Duplicate_check
 
 class SpspMongoDB:
 
     def __init__(self):
-        params = config.mongo_config()
+        params = config.config(section='mongodb')
         self.mongoClient = self.mongo_client_connect()
         self.db = self.mongoClient[params['database']]
-        self.collection = self.db[params['collection']]
-        self.image_collection = self.db['image']
+        self.clct_collection = self.db[params['clct_collection']]
+        self.image_collection = self.db[params['image_collection']]
 
     def mongo_client_connect(self):
-        params = config.mongo_config()
+        params = config.config(section='mongodb')
         mongoClient = MongoClient(host=params['host'], port=int(params['port']), unicode_decode_error_handler='ignore')
         return mongoClient
 
@@ -33,12 +32,13 @@ class SpspMongoDB:
                 "$nin": _check_types
             }
         }
+        # TODO: 추후엔 thumbnailUrl 이미지에서 downloadPaths 로 변경될 예정
         projection = {
             "_id": 1,
             "thumbnailUrl": 1
         }
 
-        results = self.collection.find(query, projection).limit(_limit)
+        results = self.clct_collection.find(query, projection).limit(_limit)
         return list(results)
 
     def find_image(self, _query):
@@ -53,7 +53,7 @@ class SpspMongoDB:
         return result
 
     def update_clct_by_imageid(self, _query, _image_dict):
-        result = self.collection.update_one(_query, {"$set": _image_dict})
+        result = self.clct_collection.update_one(_query, {"$set": _image_dict})
         # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
         return result
 
@@ -69,7 +69,7 @@ class SpspMongoDB:
         return self.image_collection.bulk_write(_querys)
 
     def bulk_write_at_clct(self, _querys):
-        self.collection.bulk_write(_querys)
+        self.clct_collection.bulk_write(_querys)
 
 
 

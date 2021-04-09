@@ -55,6 +55,37 @@ class MyTestCase(unittest.TestCase):
         print(PaletteUtil().diff_percent(d_hash1, d_hash2))
         # self.assertEqual(True, False)
 
+    def test_diff_percent_by_str(self):
+        d_hash1 = "c4e4b670c849adac"
+        c_hash1 = "06000030001"
+        p_hash1 = "d629b4a351ca3772"
+        d_hash2 = "eae866b0b207939d"
+        c_hash2 = "00000018009"
+        p_hash2 = "c4c7332159c967e5"
+        d_hash3 = "c4e4b67048c9edac"
+        c_hash3 = "06000030001"
+        p_hash3 = "d62df423598b3172"
+        d_hash4 = "c4e4b670c849adac"
+        c_hash4 = "06e00000000"
+        p_hash4 = "d62db4a359ca2770"
+        d_hash5 = "c4e4b670c849adac"
+        c_hash5 = "07000048018"
+        p_hash5 = "d62db4a351ca3770"
+        print("d_hash1,2: ", PaletteUtil().diff_percent(d_hash1, d_hash2)*100)
+        print("c_hash1,2: ", PaletteUtil().diff_percent(c_hash1, c_hash2)*100)
+        print("p_hash1,2: ", PaletteUtil().diff_percent(p_hash1, p_hash2)*100)
+        print("d_hash1,3: ", PaletteUtil().diff_percent(d_hash1, d_hash3)*100)
+        print("c_hash1,3: ", PaletteUtil().diff_percent(c_hash1, c_hash3)*100)
+        print("p_hash1,3: ", PaletteUtil().diff_percent(p_hash1, p_hash3)*100)
+        print("d_hash1,4: ", PaletteUtil().diff_percent(d_hash1, d_hash4)*100)
+        print("c_hash1,4: ", PaletteUtil().diff_percent(c_hash1, c_hash4)*100)
+        print("p_hash1,4: ", PaletteUtil().diff_percent(p_hash1, p_hash4)*100)
+        print("d_hash1,5: ", PaletteUtil().diff_percent(d_hash1, d_hash5)*100)
+        print("c_hash1,5: ", PaletteUtil().diff_percent(c_hash1, c_hash5)*100)
+        print("p_hash1,5: ", PaletteUtil().diff_percent(p_hash1, p_hash5)*100)
+        # self.assertEqual(True, False)
+
 
 if __name__ == '__main__':
     unittest.main()
+

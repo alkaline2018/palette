@@ -6,7 +6,7 @@ APP_NAME="alkaline2018/palette"
 CONTAINER_NAME="palette"
 APP_STATIC_PATH="/app/public"
 HOST_IMAGE_PATH="C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api"
-#HOST_IMAGE_PATH="C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api"
+#HOST_IMAGE_PATH="/"
 HOST_PUBLIC_PATH="$HOST_IMAGE_PATH""/public"
 HOST_IP="115.85.181.13"
 SLEEP_COMMAND="\"while true; do echo 1hour live;sleep 3600; done\""
@@ -14,8 +14,11 @@ SLEEP_COMMAND="\"while true; do echo 1hour live;sleep 3600; done\""
 #RUN_COMMAND="docker run -d --rm -v $HOST_PUBLIC_PATH:$APP_STATIC_PATH --name $CONTAINER_NAME $APP_NAME:$VERSION"' /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"'
 #RUN_COMMAND="run -d --rm -v $HOST_PUBLIC_PATH:$APP_STATIC_PATH --name $CONTAINER_NAME $APP_NAME:$VERSION /bin/bash -c $SLEEP_COMMAND"
 RUN_COMMAND="docker run -d --name $CONTAINER_NAME $APP_NAME:$VERSION /bin/bash -c $SLEEP_COMMAND"
-#RUN_COMMAND2=docker run -d --rm -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.3 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
-#docker run -d --rm -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.0 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
+#linux localtime 설정 -v 경로 변경 필요
+#ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+#docker run -d --rm -v /etc/localtime:/etc/localtime:ro -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.6 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
+#windows
+#docker run -d -e "TZ=Asia/Seoul" --rm -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.7 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 STOP_COMMAND="docker stop $CONTAINER_NAME"
 
 echo "---------info---------"
