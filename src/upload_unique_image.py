@@ -6,6 +6,7 @@ from enum import Enum
 
 
 # from env.db_conn import SpspMongoDB
+from env.db_conn import Postgresql
 from palette import Palette, urlOrPath
 from env import db_conn
 import sys
@@ -47,10 +48,12 @@ if __name__ == "__main__":
     image_paths = []
     # NOTE: 이미지 meta 정보 저장 DB
     #  DB는 어떤 것으로도 변경 가능하도록 만들어야 한다.
-    sp_mongo = db_conn.SpspMongoDB()
+    # sp_mongo = db_conn.SpspMongoDB()
+    pg = Postgresql()
+    pg.connect()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
     # _path_list = sys.argv
-    _path_list = ["","https://img4.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/09/newsis/20210409111902807jhiv.jpg"]
+    _path_list = ["","https://img3.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/12/joongang/20210412114853204vkik.jpg"]
     # 첫번째 argument 는 실행된 파이썬파일 자체라 넘기고 진행
     for v in range(1, len(_path_list)):
         down_image_path = _path_list[v]
@@ -60,7 +63,8 @@ if __name__ == "__main__":
         image_dict = palette.get_defalut_hash_dict()
         # hash 값으로 같은 이미지 찾기
         # TODO: 필요시 해당 내용은 PG로 변경한다.
-        result = sp_mongo.find_image(image_dict)
+        # result = sp_mongo.find_image(image_dict)
+        result = pg.find_image(image_dict)
         # 같은 이미지 있다면
         if result:
             # down_image_path 이 url 이 아니라면 해당 파일 삭제
@@ -101,7 +105,11 @@ if __name__ == "__main__":
             # NOTE: 아래 내용에서 down_image_path 대신 변경된 new_image_path 로 넣어준다.
             image_dict['path'] = new_image_path
             # HINT: image collection에서 image 정보 insert 후 objectId retrun 받은 걸로 iat collection에 반영
-            _id = sp_mongo.insert_image(_image_dict=image_dict)
+            pg.insert_image(image_dict)
+            con = pg.get_connect()
+            con.commit()
+            # _id = sp_mongo.insert_image(_image_dict=image_dict)
             image_paths.append(image_dict['path'])
+    pg.close()
     print(image_paths, flush=True)
 

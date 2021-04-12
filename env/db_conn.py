@@ -28,18 +28,13 @@ class Postgresql:
 
     def find_image(self, item):
         cur = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        # fields = ', '.join(item.keys())
         values = 'and '.join([x + '=%%(%s)s' % x for x in item])
-        # values2 = ', '.join(['%s=' % x for x in item])
-        # print(fields)
-        print(values)
-        # print(values2)
         sql = "SELECT * " \
               "FROM image " \
               "WHERE %s;" % (values)
-        # print(sql)
         cur.execute(sql, (item))
         result = cur.fetchone()
+        cur.close()
         return result
 
     def find_all_image(self):
@@ -51,13 +46,16 @@ class Postgresql:
         cur.close()
         return results
 
-    def insert_fran_info(self, item):
+    def insert_image(self, item):
+        cur = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
         """ insert table  """
         sum = 0
         fields = ', '.join(item.keys())
         values = ', '.join(['%%(%s)s' % x for x in item])
-        sql = 'INSERT INTO tb_xpath_nice_data_201912 (%s) VALUES (%s)' % (fields, values)
-        self.execute(sql, item)
+        sql = 'INSERT INTO image (%s) VALUES (%s)' % (fields, values)
+        print(sql)
+        cur.execute(sql, (item))
+        cur.close()
         sum += 1
         return sum
 
