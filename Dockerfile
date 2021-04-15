@@ -6,10 +6,11 @@ FROM python:3.7-slim
 
 # Set the working directory to /app
 WORKDIR /app
-
+RUN apt-get update && apt-get install -y && apt-get install -y vim
 # copy the dependencies file to the working directory
 COPY requirements.txt .
 
+RUN pip install update
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host ftp.daumkakao.com -r requirements.txt
 

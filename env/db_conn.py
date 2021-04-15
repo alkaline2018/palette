@@ -20,6 +20,7 @@ class Postgresql:
         return self.connection
 
     def close(self):
+        self.connection.commit()
         self.connection.close()
 
     def execute(self, sql, params={}):

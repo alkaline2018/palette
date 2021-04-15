@@ -52,8 +52,8 @@ if __name__ == "__main__":
     pg = Postgresql()
     pg.connect()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
-    # _path_list = sys.argv
-    _path_list = ["","https://img3.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202104/12/joongang/20210412114853204vkik.jpg"]
+    _path_list = sys.argv
+    # _path_list = ["","https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Fmaxmovie%2F9727ede44dd848a89ba258d2fd41fefa.JPG"]
     # 첫번째 argument 는 실행된 파이썬파일 자체라 넘기고 진행
     for v in range(1, len(_path_list)):
         down_image_path = _path_list[v]
@@ -106,8 +106,8 @@ if __name__ == "__main__":
             image_dict['path'] = new_image_path
             # HINT: image collection에서 image 정보 insert 후 objectId retrun 받은 걸로 iat collection에 반영
             pg.insert_image(image_dict)
-            con = pg.get_connect()
-            con.commit()
+            # con = pg.get_connect()
+            # con.commit()
             # _id = sp_mongo.insert_image(_image_dict=image_dict)
             image_paths.append(image_dict['path'])
     pg.close()
