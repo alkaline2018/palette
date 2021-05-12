@@ -18,7 +18,7 @@ RUN_COMMAND="docker run -d --name $CONTAINER_NAME $APP_NAME:$VERSION /bin/bash -
 #ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 #docker run -d --rm -v /etc/localtime:/etc/localtime:ro -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.6 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 #windows
-#docker run -d -e "TZ=Asia/Seoul" --rm -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.8 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
+#docker run -d -e "TZ=Asia/Seoul" --rm -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.9 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 STOP_COMMAND="docker stop $CONTAINER_NAME"
 
 echo "---------info---------"

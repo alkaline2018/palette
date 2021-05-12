@@ -6,7 +6,7 @@ from env import config
 import psycopg2 as pg
 import psycopg2.extras
 
-from remove_duplicated import Duplicate_check
+from imageEnums import Duplicate_check
 
 class Postgresql:
     def __init__(self):
@@ -68,6 +68,7 @@ class SpspMongoDB:
         self.db = self.mongoClient[params['database']]
         self.clct_collection = self.db[params['clct_collection']]
         self.image_collection = self.db[params['image_collection']]
+        self.image_collection2 = self.db[params['image_convert_collection']]
 
     def mongo_client_connect(self):
         params = config.config(section='mongodb')
@@ -77,22 +78,24 @@ class SpspMongoDB:
     def close(self):
         self.mongoClient.close()
 
+    # TODO: collection 은 parameter로 변경되어 작동할 것
     def find_clct_images_by_check_type(self,
-                                       _check_types=[Duplicate_check.DUPLICATED.value, Duplicate_check.ORIGINAL.value, Duplicate_check.ERROR.value],
+                                       _collection,
+                                       _check_types=[Duplicate_check.ALL_DOWNLOAD_IMAGE.value],
                                        # _check_types=[Duplicate_check.DUPLICATED.value, Duplicate_check.ORIGINAL.value],
                                        _limit=10):
         query = {
-            "duplicateCheck": {
-                "$nin": _check_types
+            "imagesStatus": {
+                "$in": _check_types
             }
         }
-        # TODO: 추후엔 thumbnailUrl 이미지에서 downloadPaths 로 변경될 예정
         projection = {
             "_id": 1,
-            "thumbnailUrl": 1
+            "images": 1,
+            "channel": 1
         }
 
-        results = self.clct_collection.find(query, projection).limit(_limit)
+        results = _collection.find(query, projection).limit(_limit)
         return list(results)
 
     def find_image(self, _query):
@@ -113,6 +116,11 @@ class SpspMongoDB:
 
     def insert_image(self, _image_dict):
         _id = self.image_collection.insert_one(_image_dict)
+        # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
+        return _id
+
+    def insert_image2(self, _image_dict):
+        _id = self.image_collection2.insert_one(_image_dict)
         # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
         return _id
 

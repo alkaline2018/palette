@@ -8,7 +8,7 @@ class MyTestCase(unittest.TestCase):
     def test_insert_image(self):
         image_dict = {'p_hash': '8d31d621c75c9be2', 'd_hash': '6abe3174cab33444', 'c_hash': '061c0000000',
          'pdc_detail_hash': '8dec5d6885c79729b78ad8892_74ad6195e579154d8aea635ad_0fbfe1f3fd01c7c000010183e0000300000',
-         'path': 'public/image/2021/04/12/17/24/7fa6209f-13a7-343f-bad2-8e4f81f98a96.png'}
+         'path': 'public/images/2021/04/12/17/24/7fa6209f-13a7-343f-bad2-8e4f81f98a96.png'}
         pg = Postgresql()
         pg.connect()
         pg.insert_image(image_dict)

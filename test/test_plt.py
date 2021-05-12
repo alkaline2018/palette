@@ -19,7 +19,7 @@ class MyTestCase(unittest.TestCase):
 
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
         file_name = "test/1ee8d83f26004582a4ff6d832452c514.jpg"
-        image_path = (CONFIG_PATH + "/../static/image/" + file_name)
+        image_path = (CONFIG_PATH + "/../static/images/" + file_name)
         img = mpimg.imread(image_path)
         colors_from_img = img[:, 0, :]
 
@@ -70,7 +70,7 @@ class MyTestCase(unittest.TestCase):
         plt.style.use("default")
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
         file_name = "test/4bffe91c93344157a33c94c15c08f867.jpg"
-        image_path = (CONFIG_PATH + "/../static/image/"+file_name)
+        image_path = (CONFIG_PATH + "/../static/images/"+file_name)
         result_path = (CONFIG_PATH + "/../static/result/"+file_name)
 
         jpg_img_arr = mpimg.imread(image_path)

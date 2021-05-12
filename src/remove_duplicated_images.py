@@ -11,7 +11,7 @@ from os.path import isfile, join
 
 if __name__ == "__main__":
     # mypath = join('..', 'static', 'image', 'test')
-    mypath = join('..','static','image')
+    mypath = join('..', 'static', 'images')
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     print(onlyfiles.__len__())
     for onlyfile in onlyfiles:

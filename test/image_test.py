@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # opening a  image
     CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
     IMAGE_SIZE = (50, 50)
-    im = Image.open(CONFIG_PATH + "/../static/image/cafe.jpg").convert("L").convert("RGB")
+    im = Image.open(CONFIG_PATH + "/../static/images/cafe.jpg").convert("L").convert("RGB")
     # url = "https://imgnews.pstatic.net/image/029/2021/03/12/0002660482_001_20210312070406814.jpg?type=w647"
     # im = Image.open(requests.get(url, stream=True).raw).convert("RGB")
     im = im.resize(IMAGE_SIZE, Image.LANCZOS)
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
 
     # im2 = Image.open(CONFIG_PATH + "/../static/image/대출2.jpg").convert("L")
-    im2 = Image.open(CONFIG_PATH + "/../static/image/cafe_3.jpg").convert("L").convert("RGB")
+    im2 = Image.open(CONFIG_PATH + "/../static/images/cafe_3.jpg").convert("L").convert("RGB")
     # url = "https://imgnews.pstatic.net/image/215/2021/03/12/A202103120018_1_20210312063856183.jpg?type=w647"
     # im2 = Image.open(requests.get(url, stream=True).raw).convert("RGB")
     im2 = im2.resize(IMAGE_SIZE, Image.LANCZOS)

@@ -48,9 +48,9 @@ if __name__ == "__main__":
     image_paths = []
     # NOTE: 이미지 meta 정보 저장 DB
     #  DB는 어떤 것으로도 변경 가능하도록 만들어야 한다.
-    # sp_mongo = db_conn.SpspMongoDB()
-    pg = Postgresql()
-    pg.connect()
+    sp_mongo = db_conn.SpspMongoDB()
+    # pg = Postgresql()
+    # pg.connect()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
     _path_list = sys.argv
     # _path_list = ["","https://img1.daumcdn.net/thumb/R720x0/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fliveboard%2Fmaxmovie%2F9727ede44dd848a89ba258d2fd41fefa.JPG"]
@@ -63,8 +63,8 @@ if __name__ == "__main__":
         image_dict = palette.get_defalut_hash_dict()
         # hash 값으로 같은 이미지 찾기
         # TODO: 필요시 해당 내용은 PG로 변경한다.
-        # result = sp_mongo.find_image(image_dict)
-        result = pg.find_image(image_dict)
+        result = sp_mongo.find_image(image_dict)
+        # result = pg.find_image(image_dict)
         # 같은 이미지 있다면
         if result:
             # down_image_path 이 url 이 아니라면 해당 파일 삭제
@@ -80,7 +80,7 @@ if __name__ == "__main__":
             # image_dict['extractColor'] = palette.extract_color()  # 필요시 이미지 추출색 넣음 해당 내용 작성시 속도 느림
             # path 일 경우엔 이미지를 옮기고 url 일 경우엔 이미지를 생성한다. 참고
             new_image_path = ''
-            new_dir_path = get_dir_path_for_now(_parent_path="public/image/", _strftime="%Y/%m/%d/%H/%M/")
+            new_dir_path = get_dir_path_for_now(_parent_path="public/images/", _strftime="%Y/%m/%d/%H/%M/")
 
             create_directory(PARENT_PATH + new_dir_path)
             if urlOrPath(down_image_path):
@@ -101,15 +101,17 @@ if __name__ == "__main__":
                 new_image_path = new_dir_path + image_name
                 o_path = os.path.join(PARENT_PATH + down_image_path)
                 n_path = os.path.join(PARENT_PATH + new_image_path)
-                shutil.move(o_path, n_path)
+                # NOTE: 필요시 copy 에서 move로 변경 할 것
+                # shutil.move(o_path, n_path)
+                shutil.copy(o_path, n_path)
             # NOTE: 아래 내용에서 down_image_path 대신 변경된 new_image_path 로 넣어준다.
             image_dict['path'] = new_image_path
             # HINT: image collection에서 image 정보 insert 후 objectId retrun 받은 걸로 iat collection에 반영
-            pg.insert_image(image_dict)
+            # pg.insert_image(image_dict)
             # con = pg.get_connect()
             # con.commit()
-            # _id = sp_mongo.insert_image(_image_dict=image_dict)
+            _id = sp_mongo.insert_image(_image_dict=image_dict)
             image_paths.append(image_dict['path'])
-    pg.close()
+    # pg.close()
     print(image_paths, flush=True)
 

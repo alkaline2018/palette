@@ -1,6 +1,6 @@
 import unittest
 
-from PIL import Image
+from PIL import Image, ImageEnhance, ImageFilter
 
 from palette import Palette, HashType, PaletteUtil, urlOrPath
 import os
@@ -8,10 +8,10 @@ import os
 class MyTestCase(unittest.TestCase):
     def setUp(self) -> None:
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
-        file_name = "cafe.jpg"
-        self.image_path = (CONFIG_PATH + "/../static/image/" + file_name)
-        file_name2 = "cafe_4.jpg"
-        self.image_path2 = (CONFIG_PATH + "/../static/image/" + file_name2)
+        file_name = "ace.jpg"
+        self.image_path = (CONFIG_PATH + "/../public/temp/" + file_name)
+        file_name2 = "ace2.jpg"
+        self.image_path2 = (CONFIG_PATH + "/../public/temp/" + file_name2)
         self.image_url = "https://imgnews.pstatic.net/image/029/2021/03/12/0002660482_001_20210312070406814.jpg?type=w647"
 
     def test_init_url(self):
@@ -46,6 +46,29 @@ class MyTestCase(unittest.TestCase):
         else:
             print("path")
 
+    def test_convert_image(self):
+        file_name, file_ext = os.path.splitext(self.image_path)
+
+        palette = Palette(self.image_path)
+        img = palette.get_image()
+        for i in range(1, 5):
+            if i == 1:
+                # NOTE: 강조 후 그레이 스케일링하여 외곽선 따기
+                convert_img = ImageEnhance.Contrast(img).enhance(2).convert("L").filter(ImageFilter.CONTOUR)
+            elif i == 2:
+                # NOTE: 강조
+                convert_img = ImageEnhance.Contrast(img).enhance(2)
+            elif i == 3:
+                # NOTE: 그레이 스케일링
+                convert_img = img.convert("L")
+            elif i == 4:
+                # NOTE: 밝기 업
+                convert_img = ImageEnhance.Brightness(img).enhance(2)
+            convert_path = file_name+"_"+str(i)+file_ext
+            convert_img.save(convert_path)
+
+        # n_path_1 = self.image_path2.replace(".png", "_1.png")
+        # convert_img.save(n_path_1)
 
     def test_diff_percent(self):
         palette = Palette(self.image_path)

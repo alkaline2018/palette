@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         # RGBX
 
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
-        im = Image.open(CONFIG_PATH + "/../static/image/cafe.jpg").convert("RGB").convert("L").convert("1")
+        im = Image.open(CONFIG_PATH + "/../static/images/cafe.jpg").convert("RGB").convert("L").convert("1")
         # url = "https://imgnews.pstatic.net/image/029/2021/03/12/0002660482_001_20210312070406814.jpg?type=w647"
         # im = Image.open(requests.get(url, stream=True).raw).convert("RGB")
         # im = im.resize(IMAGE_SIZE, Image.LANCZOS)
@@ -26,7 +26,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_shift(self):
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
-        file_path = CONFIG_PATH + "/../static/image/ccb4c7f67589088bdd3320df96aa16bc.png"
+        file_path = CONFIG_PATH + "/../static/images/ccb4c7f67589088bdd3320df96aa16bc.png"
         image = Image.open(file_path)
         top_two_bits = 0b11000000
         ARRAY_DATATYPE = 'l'
@@ -48,20 +48,20 @@ class MyTestCase(unittest.TestCase):
 
     def test_colorgram(self):
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
-        file_path = CONFIG_PATH + "/../static/image/ccb4c7f67589088bdd3320df96aa16bc.png"
+        file_path = CONFIG_PATH + "/../static/images/ccb4c7f67589088bdd3320df96aa16bc.png"
         colors = colorgram.extract(file_path, 6)
         print(colors)
 
     def test_ext_colors(self):
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
-        colors, pixel_count = extcolors.extract_from_path(CONFIG_PATH + "/../static/image/ccb4c7f67589088bdd3320df96aa16bc.png")
+        colors, pixel_count = extcolors.extract_from_path(CONFIG_PATH + "/../static/images/ccb4c7f67589088bdd3320df96aa16bc.png")
         print(colors)
 
 
     def test_get_colors(self):
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
 
-        im = Image.open(CONFIG_PATH + "/../static/image/ccb4c7f67589088bdd3320df96aa16bc.png").convert("P", palette=Image.ADAPTIVE, colors=30).convert("RGB")
+        im = Image.open(CONFIG_PATH + "/../static/images/ccb4c7f67589088bdd3320df96aa16bc.png").convert("P", palette=Image.ADAPTIVE, colors=30).convert("RGB")
         # pixels = list(im.getdata())
         # print(pixels)
         util = ColorUtil()
