@@ -41,4 +41,4 @@ def convert_image_insert(palette, path, down_image_path, image_id, sp_mongo):
         # TODO: path가 이상할 것임 이 부분 제대로 하자.
         image_dict['path'] = down_file_name + "_" + str(i) + down_file_ext
         image_dict["collectDatetime"] = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-        _id = sp_mongo.insert_image2(_image_dict=image_dict)
+        _id = sp_mongo.insert_by_dict2(_dict=image_dict)

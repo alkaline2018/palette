@@ -33,6 +33,13 @@ class MyTestCase(unittest.TestCase):
         palette2 = Palette(self.image_path)
         self.assertTrue(palette.__ne__(palette2))
 
+    def test_width_height(self):
+        palette = Palette(self.image_url)
+        im = palette.get_image()
+        print(im.width)
+        print(im.height)
+
+
     def test_extract_color(self):
         palette = Palette(self.image_path)
         print(palette.extract_color())

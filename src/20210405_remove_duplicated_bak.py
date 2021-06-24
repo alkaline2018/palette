@@ -60,11 +60,11 @@ if __name__ == "__main__":
                         update_dict = {}
                         update_dict['duplicateCheck'] = Duplicate_check.ORIGINAL.value
                         # HINT: image collection에서 image 정보 insert 후 objectId retrun 받은 걸로 iat collection에 반영
-                        _id = sp_mongo.insert_image(_image_dict=image_dict)
+                        _id = sp_mongo.insert_by_dict(_dict=image_dict)
                         ids.append(str(_id.inserted_id))
                 update_dict['imageIds'] = ids
                 update_dict['duplicateCheck'] = Duplicate_check.DUPLICATED.value
-                result = sp_mongo.update_clct_by_imageid(_query={"_id": uncheck_image['_id']}, _image_dict=update_dict)
+                result = sp_mongo.update_one_by_query(_query={"_id": uncheck_image['_id']}, _dict=update_dict)
 
                 # palette = Palette(uncheck_image['thumbnailUrl'])
                 # # palette = Palette("https://cr.shopping.naver.com/adcr.nhn?x=SdjjL1b3ICWfMyaoshT7G%2F%2F%2F%2Fw%3D%3DsBBeyW5RJ%2BpZRDEwdzmHYXJ4QR%2FJ9CpiJbA4CmIUSkZN7ZIoG04hikA9DI%2Fs9KTHRAao9MLVnnMHfsi%2F6jkAXL4LvkpnulXUbhzl%2FArq8TcGsKCGSMRcaby0CmGOdMAuoCDWjZ5m30BkDTbvgfAAvhLuVw3GdaDAvxDSjC3cnt2Z%2F22ms%2BW8TiQQNz%2FOHMMFFpI7ieNQiFnSyowz6LIS2Yz6Ir%2B5AOAfU8bertyJz15tlc6P1YajnJs%2FPQ4MWP%2BA7wc%2B%2FjkR2vl%2B%2B%2B%2F%2BVPNlrhRUrHESqIeqBN9PO%2B82TGOUqo4T1eSj%2F6xGLNrhtuEbaXa1PYAb0zmPF1cRoKRscXeQGFSn5i45AyoqPxx4yW3EdA4ZnT4ceB%2BlGDWLvzs522BCL3zg4U0yTs3JtBfF0%2FHZ69fkBvfSVk5i0l0lJjEbWc4nXf5tXxJGMO5e%2F2t03j%2F%2Fw7b1ceBA0Ggm7tz8tT7DokBVJz6lCEVM2%2BIyZ0mR0OWyuXo6Sx2BQiztez%2BmaP63goB6Y4br19mT6CWblxCV06IYxftTyJ%2F0LfjYPI%2BO5PcsdixOKM84nfw%2BU7IK6XVCjSPr1ISADQFG5OSwhripUqYorg60E722P2cb8d2GIDMt0AU13zuRrNlheMLDOy1Vhq%2FH77x9Zlr1IFzyuow%3D%3D&nvMid=82435583083&catId=50000821")
@@ -100,9 +100,9 @@ if __name__ == "__main__":
                 #     pass
 
             except Exception as e:
-                result = sp_mongo.update_clct_by_imageid(
+                result = sp_mongo.update_one_by_query(
                     _query={"_id": uncheck_image['_id']},
-                    _image_dict={'duplicateCheck': Duplicate_check.ERROR.value}
+                    _dict={'duplicateCheck': Duplicate_check.ERROR.value}
                 )
                 print(f"error1: {e}")
     except Exception as e:

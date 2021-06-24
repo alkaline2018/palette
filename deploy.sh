@@ -16,9 +16,13 @@ SLEEP_COMMAND="\"while true; do echo 1hour live;sleep 3600; done\""
 RUN_COMMAND="docker run -d --name $CONTAINER_NAME $APP_NAME:$VERSION /bin/bash -c $SLEEP_COMMAND"
 #linux localtime 설정 -v 경로 변경 필요
 #ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+#C:\Users\song_e\Desktop\spsp
 #docker run -d --rm -v /etc/localtime:/etc/localtime:ro -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.6 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 #windows
-#docker run -d -e "TZ=Asia/Seoul" --rm -v C:\Workspace\VisualStudioProjects\interactive\interactive\image-upload-api\public:/app/public --name palette alkaline2018/palette:0.1.9 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
+# NOTE: 실제 사용할 것
+#docker run -d -e "TZ=Asia/Seoul" --rm -v C:\Users\song_e\Desktop\spsp:/app/public --name palette alkaline2018/palette:0.2.2 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
+# TODO: 20서버 기준
+#docker run -d -e "TZ=Asia/Seoul" --rm -v D:\spsp:/app/public --name palette alkaline2018/palette:1.0.1 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 STOP_COMMAND="docker stop $CONTAINER_NAME"
 
 echo "---------info---------"
@@ -40,7 +44,7 @@ docker build -t $APP_NAME:$VERSION .
 $STOP_COMMAND
 #run -d --name palette2 alkaline2018/palette:0.1.1 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 #$RUN_COMMAND
-#docker push $APP_NAME:$VERSION
+docker push $APP_NAME:$VERSION
 
 #echo stop motion
 #read motino

@@ -11,3 +11,7 @@ port=
 database=
 clct_collection=
 image_collection=
+
+[regex]
+clct_collections=
+duplicate_date_range=

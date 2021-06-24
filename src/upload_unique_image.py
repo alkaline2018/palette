@@ -110,7 +110,7 @@ if __name__ == "__main__":
             # pg.insert_image(image_dict)
             # con = pg.get_connect()
             # con.commit()
-            _id = sp_mongo.insert_image(_image_dict=image_dict)
+            _id = sp_mongo.insert_by_dict(_dict=image_dict)
             image_paths.append(image_dict['path'])
     # pg.close()
     print(image_paths, flush=True)

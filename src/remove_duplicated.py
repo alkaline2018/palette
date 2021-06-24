@@ -63,17 +63,17 @@ if __name__ == "__main__":
                         unique_image_path = down_image_path
                         image_dict['path'] = unique_image_path
                         # HINT: image collection에서 image 정보 insert 후 objectId retrun 받은 걸로 iat collection에 반영
-                        _id = sp_mongo.insert_image(_image_dict=image_dict)
+                        _id = sp_mongo.insert_by_dict(_dict=image_dict)
                         ids.append(_id.inserted_id)
 
                 update_dict['imageIds'] = ids
                 update_dict['duplicateCheck'] = Duplicate_check.DUPLICATED.value
-                result = sp_mongo.update_clct_by_imageid(_query={"_id": uncheck_image['_id']}, _image_dict=update_dict)
+                result = sp_mongo.update_one_by_query(_query={"_id": uncheck_image['_id']}, _dict=update_dict)
 
             except Exception as e:
-                result = sp_mongo.update_clct_by_imageid(
+                result = sp_mongo.update_one_by_query(
                     _query={"_id": uncheck_image['_id']},
-                    _image_dict={'duplicateCheck': Duplicate_check.ERROR.value}
+                    _dict={'duplicateCheck': Duplicate_check.ERROR.value}
                 )
                 print(f"error1: {e}", flush=True)
     except Exception as e:

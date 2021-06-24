@@ -109,23 +109,19 @@ class SpspMongoDB:
         # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
         return result
 
-    def update_clct_by_imageid(self, _query, _image_dict):
-        result = self.clct_collection.update_one(_query, {"$set": _image_dict})
-        # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
+    def update_one_by_query(self, _collection, _query, _dict):
+        result = _collection.update_one(_query, {"$set": _dict})
         return result
 
-    def insert_image(self, _image_dict):
-        _id = self.image_collection.insert_one(_image_dict)
+    def insert_by_dict(self, _dict):
+        _id = self.image_collection.insert_one(_dict)
         # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
         return _id
 
-    def insert_image2(self, _image_dict):
-        _id = self.image_collection2.insert_one(_image_dict)
+    def insert_by_dict2(self, _dict):
+        _id = self.image_collection2.insert_one(_dict)
         # data = pd.DataFrame([result for result in results]).reset_index(drop=1)
         return _id
-
-    def get_insert_image_query(self, _image_dict):
-        return InsertOne(_image_dict)
 
     def bulk_write_at_image(self, _querys):
         return self.image_collection.bulk_write(_querys)
