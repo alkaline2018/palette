@@ -7,6 +7,7 @@ import os
 
 class MyTestCase(unittest.TestCase):
     def setUp(self) -> None:
+        self.p_util = PaletteUtil()
         CONFIG_PATH = os.path.dirname(os.path.abspath(__file__))
         file_name = "ace.jpg"
         self.image_path = (CONFIG_PATH + "/../public/temp/" + file_name)
@@ -77,13 +78,20 @@ class MyTestCase(unittest.TestCase):
         # n_path_1 = self.image_path2.replace(".png", "_1.png")
         # convert_img.save(n_path_1)
 
+    def test_rgb2hex(self):
+        self.p_util = PaletteUtil()
+
+        hex = self.p_util.convert_rgb2hex((53, 128, 64))
+        nomal_hex = self.p_util.get_normaliztion_hex_by_rgb((53, 128, 64))
+        self.assertEqual("#358040", hex)
+        self.assertEqual("#338844", nomal_hex)
+
     def test_diff_percent(self):
         palette = Palette(self.image_path)
         d_hash1 = palette.make_hash(HashType.DIFFERENCE_HASH, 8).__str__()
         palette2 = Palette(self.image_path2)
         d_hash2 = palette2.make_hash(HashType.DIFFERENCE_HASH, 8).__str__()
         print(PaletteUtil().diff_percent(d_hash1, d_hash2))
-        # self.assertEqual(True, False)
 
     def test_diff_percent_by_str(self):
         d_hash1 = "c4e4b670c849adac"
@@ -101,18 +109,18 @@ class MyTestCase(unittest.TestCase):
         d_hash5 = "c4e4b670c849adac"
         c_hash5 = "07000048018"
         p_hash5 = "d62db4a351ca3770"
-        print("d_hash1,2: ", PaletteUtil().diff_percent(d_hash1, d_hash2)*100)
-        print("c_hash1,2: ", PaletteUtil().diff_percent(c_hash1, c_hash2)*100)
-        print("p_hash1,2: ", PaletteUtil().diff_percent(p_hash1, p_hash2)*100)
-        print("d_hash1,3: ", PaletteUtil().diff_percent(d_hash1, d_hash3)*100)
-        print("c_hash1,3: ", PaletteUtil().diff_percent(c_hash1, c_hash3)*100)
-        print("p_hash1,3: ", PaletteUtil().diff_percent(p_hash1, p_hash3)*100)
-        print("d_hash1,4: ", PaletteUtil().diff_percent(d_hash1, d_hash4)*100)
-        print("c_hash1,4: ", PaletteUtil().diff_percent(c_hash1, c_hash4)*100)
-        print("p_hash1,4: ", PaletteUtil().diff_percent(p_hash1, p_hash4)*100)
-        print("d_hash1,5: ", PaletteUtil().diff_percent(d_hash1, d_hash5)*100)
-        print("c_hash1,5: ", PaletteUtil().diff_percent(c_hash1, c_hash5)*100)
-        print("p_hash1,5: ", PaletteUtil().diff_percent(p_hash1, p_hash5)*100)
+        print("d_hash1,2: ", self.p_util.diff_percent(d_hash1, d_hash2)*100)
+        print("c_hash1,2: ", self.p_util.diff_percent(c_hash1, c_hash2)*100)
+        print("p_hash1,2: ", self.p_util.diff_percent(p_hash1, p_hash2)*100)
+        print("d_hash1,3: ", self.p_util.diff_percent(d_hash1, d_hash3)*100)
+        print("c_hash1,3: ", self.p_util.diff_percent(c_hash1, c_hash3)*100)
+        print("p_hash1,3: ", self.p_util.diff_percent(p_hash1, p_hash3)*100)
+        print("d_hash1,4: ", self.p_util.diff_percent(d_hash1, d_hash4)*100)
+        print("c_hash1,4: ", self.p_util.diff_percent(c_hash1, c_hash4)*100)
+        print("p_hash1,4: ", self.p_util.diff_percent(p_hash1, p_hash4)*100)
+        print("d_hash1,5: ", self.p_util.diff_percent(d_hash1, d_hash5)*100)
+        print("c_hash1,5: ", self.p_util.diff_percent(c_hash1, c_hash5)*100)
+        print("p_hash1,5: ", self.p_util.diff_percent(p_hash1, p_hash5)*100)
         # self.assertEqual(True, False)
 
 

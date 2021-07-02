@@ -1,27 +1,21 @@
 #!/usr/bin/env python
-import datetime
 import re
 import time
 import uuid
 
-
-
 # from env.db_conn import SpspMongoDB
-from imageEnums import Duplicate_check, Image_status
+from enums.image_enums import Duplicate_check, Image_status
 from palette import Palette, urlOrPath
-from env import db_conn, config
-import sys
+from env import db_conn_bak, config
 import os
 import shutil
 from datetime import datetime, timedelta
 from pandas import date_range
 
-from util import convert_image_insert
-
 if __name__ == "__main__":
     stime = time.time()  # 시작시간
     results = []
-    sp_mongo = db_conn.SpspMongoDB()
+    sp_mongo = db_conn_bak.SpspMongoDB()
     sp_db = sp_mongo.db
     regex_config = config.config(section="regex")
     ds = date_range(end=datetime.today(), periods=int(regex_config['duplicate_date_range']))
@@ -44,7 +38,6 @@ if __name__ == "__main__":
                     # NOTE: 2. 이미지에서 imageHash 값을 추출한다.
                     for uncheck_image in uncheck_images:
                         # HINT: 하나의 문서에는 여러 장의 이미지가 있을 수 있다. 이에 여러 장의 이미지를 중복 처리한다.
-                        # TODO: 현재는 임의로 thumbnailUrl 로 잡았지만 추후 downloadPaths 로 변경한다.
                         down_images = uncheck_image['images']
                         down_image_channel = uncheck_image['channel']
                         update_dict = {}

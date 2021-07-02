@@ -9,8 +9,10 @@ port=
 host=
 port=
 database=
+collection=
 clct_collection=
 image_collection=
+image_convert_collection=
 
 [regex]
 clct_collections=

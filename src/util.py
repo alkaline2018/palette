@@ -13,6 +13,7 @@ def create_directory(directory):
 
 def get_dir_path_for_now(_parent_path, _strftime):
     now_date = datetime.datetime.now()
+    # TODO: util 함수를 통해 현재 날짜 str화 시켜 반환
     now_dir_structure = now_date.strftime(_strftime)
     new_dir_path = _parent_path + now_dir_structure
     return new_dir_path

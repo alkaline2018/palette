@@ -32,7 +32,8 @@ def urlOrPath(path):
 
 class PaletteUtil:
     # TODO: 이미지 hash 값 비교를 통해 percent 차이 알려주기
-    def diff_percent(self, _hash, _hash2, hash_type=HashType.PERCEPTIVE_HASH):
+    @staticmethod
+    def diff_percent(_hash, _hash2, hash_type=HashType.PERCEPTIVE_HASH):
         """
         :type _hash: str
         :type _hash2: str
@@ -46,16 +47,30 @@ class PaletteUtil:
         __hash2 = imagehash.hex_to_flathash(_hash2, hash_size)
         return __hash1.__sub__(__hash2) / hash_size ** 2
 
-    def convert_rgb2hex(self, _rgb):
+    @staticmethod
+    def convert_rgb2hex(_rgb):
+        """
+        :type _rgb: str
+        :return _hex: str
+        """
         _hex = '#%02x%02x%02x' % _rgb
         return _hex
 
     def get_normaliztion_hex_by_rgb(self, _rgb):
+        """
+        :type _rgb: str
+        :return normal_hex: str
+        """
         _hex = self.convert_rgb2hex(_rgb)
         normal_hex = self.convert_normaliztion_by_hex(_hex)
         return normal_hex
 
-    def convert_normaliztion_by_hex(self, _hex):
+    @staticmethod
+    def convert_normaliztion_by_hex(_hex):
+        """
+        :type _hex: str
+        :return normal_hex: str
+        """
         nomal_hex = ("#" + _hex[1] + _hex[1] + _hex[3] + _hex[3] + _hex[5] + _hex[5])
         return nomal_hex
 
@@ -66,6 +81,9 @@ class Palette:
     DETAIL_HASH_SIZE = 10
 
     def __init__(self, path=None):
+        """
+        :type path: str
+        """
         if(path is None):
             print("None")
         elif(type(path) != str):
@@ -86,9 +104,17 @@ class Palette:
 
     # TODO: 같은 이미지인지 확인 -> DB로 p,d,c hash eq 확인
     def __eq__(self, other):
+        """
+        :type other: Palette
+        :return boolean
+        """
         return self.defalut_hash_dict == other.defalut_hash_dict
 
     def __ne__(self, other):
+        """
+        :type other: Palette
+        :return boolean
+        """
         return self.defalut_hash_dict != other.defalut_hash_dict
 
     def get_defalut_hash_dict(self):
@@ -101,14 +127,15 @@ class Palette:
         """
         :type hash_type: HashType
         :type hash_size: int
+        :return image_hash
         """
         if hash_type == HashType.PERCEPTIVE_HASH:
-            ih = imagehash.phash(self.image, hash_size)
+            image_hash = imagehash.phash(self.image, hash_size)
         elif hash_type == HashType.DIFFERENCE_HASH:
-            ih = imagehash.dhash(self.image, hash_size)
+            image_hash = imagehash.dhash(self.image, hash_size)
         elif hash_type == HashType.COLOR_HASH:
-            ih = imagehash.colorhash(self.image, hash_size)
-        return ih
+            image_hash = imagehash.colorhash(self.image, hash_size)
+        return image_hash
 
     def extract_color(self, number_of_colors=6):
         """

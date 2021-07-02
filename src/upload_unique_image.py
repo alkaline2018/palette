@@ -6,32 +6,14 @@ from enum import Enum
 
 
 # from env.db_conn import SpspMongoDB
-from env.db_conn import Postgresql
+from env.db_conn_bak import Postgresql
 from palette import Palette, urlOrPath
-from env import db_conn
+from env import db_conn_bak
 import sys
 import os
 import shutil
 
 from util import create_directory, get_dir_path_for_now
-
-
-class Duplicate_check(Enum):
-    """
-    HINT:
-    :type ORIGINAL: 오리지날 이미지
-    :type DUPLICATED: 오리지날 이미지에서 파생된 중복이미지
-    :type ERROR: 원인을 알 수 없는 나머지 ERROR
-    :type HASH_ERROR: 이미지 해시 생성중 발생한 ERROR
-    :type IMAGE_INSERT_ERROR: 이미지 INSERT 중 발생한 ERROR
-    :type IMAGE_SAVE_ERROR: 이미지 저장중 발생한 ERROR
-    """
-    ORIGINAL = 1
-    DUPLICATED = 2
-    ERROR = 3
-    HASH_ERROR = 4
-    IMAGE_INSERT_ERROR = 5
-    IMAGE_SAVE_ERROR = 6
 
 
 # NOTE: 해당 내용에선 print를 추가하면 안된다.
@@ -48,7 +30,8 @@ if __name__ == "__main__":
     image_paths = []
     # NOTE: 이미지 meta 정보 저장 DB
     #  DB는 어떤 것으로도 변경 가능하도록 만들어야 한다.
-    sp_mongo = db_conn.SpspMongoDB()
+    # TODO: 설정에 따라서 1일 경우엔 mongo 2일 경우엔 postgres
+    sp_mongo = db_conn_bak.SpspMongoDB()
     # pg = Postgresql()
     # pg.connect()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
@@ -62,7 +45,7 @@ if __name__ == "__main__":
         # get hash
         image_dict = palette.get_defalut_hash_dict()
         # hash 값으로 같은 이미지 찾기
-        # TODO: 필요시 해당 내용은 PG로 변경한다.
+        # TODO: 필요시 해당 내용은 postgreSQL로 변경한다.
         result = sp_mongo.find_image(image_dict)
         # result = pg.find_image(image_dict)
         # 같은 이미지 있다면
@@ -83,12 +66,13 @@ if __name__ == "__main__":
             new_dir_path = get_dir_path_for_now(_parent_path="public/images/", _strftime="%Y/%m/%d/%H/%M/")
 
             create_directory(PARENT_PATH + new_dir_path)
+            # TODO: url 일때와 path 일때를 구분하여 함수화 시켜야한다.
             if urlOrPath(down_image_path):
                 # url 을 바탕으로 이미지 이름 생성 png 저장 이유는 원본으로 보장된다.
                 # print("url")
+                # TODO: 현재 png 형태만 저장에서 image가 가지고 있는 확장자를 사용하는걸로 변경 필요
                 image_name = uuid.uuid3(uuid.NAMESPACE_URL, down_image_path).__str__() + ".png"
                 new_image_path = new_dir_path + image_name
-                # print(PARENT_PATH + new_image_path)
                 n_path = os.path.join(PARENT_PATH + new_image_path)
                 # 이미지 저장
                 palette.get_image().save(n_path)

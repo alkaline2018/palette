@@ -22,7 +22,10 @@ RUN_COMMAND="docker run -d --name $CONTAINER_NAME $APP_NAME:$VERSION /bin/bash -
 # NOTE: 실제 사용할 것
 #docker run -d -e "TZ=Asia/Seoul" --rm -v C:\Users\song_e\Desktop\spsp:/app/public --name palette alkaline2018/palette:0.2.2 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 # TODO: 20서버 기준
+# container 중지시 삭제
 #docker run -d -e "TZ=Asia/Seoul" --rm -v D:\spsp:/app/public --name palette alkaline2018/palette:1.0.1 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
+# restart 시에도 container 유지
+#docker run -d --restart=always -e "TZ=Asia/Seoul" -v D:\spsp:/app/public --name palette alkaline2018/palette:1.0.1 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 STOP_COMMAND="docker stop $CONTAINER_NAME"
 
 echo "---------info---------"
