@@ -6,6 +6,7 @@ from enum import Enum
 
 
 # from env.db_conn import SpspMongoDB
+from env.db_conn import ImageMongoDB
 from env.db_conn_bak import Postgresql
 from palette import Palette, urlOrPath
 from env import db_conn_bak
@@ -31,7 +32,8 @@ if __name__ == "__main__":
     # NOTE: 이미지 meta 정보 저장 DB
     #  DB는 어떤 것으로도 변경 가능하도록 만들어야 한다.
     # TODO: 설정에 따라서 1일 경우엔 mongo 2일 경우엔 postgres
-    sp_mongo = db_conn_bak.SpspMongoDB()
+    image_mongo = ImageMongoDB("mongodb")
+    image_collection = image_mongo.get_collection()
     # pg = Postgresql()
     # pg.connect()
     # 외부에서 python 사용할 때 arguments 를 list로 받음 해당 내용은 url or path 로 받는다.
@@ -46,7 +48,7 @@ if __name__ == "__main__":
         image_dict = palette.get_defalut_hash_dict()
         # hash 값으로 같은 이미지 찾기
         # TODO: 필요시 해당 내용은 postgreSQL로 변경한다.
-        result = sp_mongo.find_image(image_dict)
+        result = image_collection.find_one(image_dict, )
         # result = pg.find_image(image_dict)
         # 같은 이미지 있다면
         if result:
@@ -94,8 +96,9 @@ if __name__ == "__main__":
             # pg.insert_image(image_dict)
             # con = pg.get_connect()
             # con.commit()
-            _id = sp_mongo.insert_by_dict(_dict=image_dict)
+            _id = image_collection.insert_one(image_dict)
             image_paths.append(image_dict['path'])
     # pg.close()
+    image_mongo.close()
     print(image_paths, flush=True)
 

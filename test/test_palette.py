@@ -54,6 +54,17 @@ class MyTestCase(unittest.TestCase):
         else:
             print("path")
 
+    def test_get_url_image_file_name(self):
+        palette = Palette(self.image_url)
+        _image = palette.get_image()
+        print(f"im:{_image.im}")
+        print(f"mode:{_image.mode}")
+        print(f"_size:{_image._size}")
+        print(f"palette:{_image.palette}")
+        print(f"info:{_image.info}")
+        print(f"category:{_image.category}")
+        print(f"readonly:{_image.readonly}")
+
     def test_convert_image(self):
         file_name, file_ext = os.path.splitext(self.image_path)
 

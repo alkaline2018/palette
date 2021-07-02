@@ -80,21 +80,21 @@ class Palette:
     COLOR_HASH_SIZE = 3
     DETAIL_HASH_SIZE = 10
 
-    def __init__(self, path=None):
+    def __init__(self, url_or_path=None):
         """
-        :type path: str
+        :type url_or_path: str
         """
-        if(path is None):
+        if(url_or_path is None):
             print("None")
-        elif(type(path) != str):
+        elif(type(url_or_path) != str):
             print("path != str")
             raise TypeError
-        elif urlOrPath(path):
+        elif urlOrPath(url_or_path):
             # print("url")
-            self.image = Image.open(requests.get(path, stream=True).raw)
+            self.image = Image.open(requests.get(url_or_path, stream=True).raw)
         else:
             # print("path")
-            self.image = Image.open(path)
+            self.image = Image.open(url_or_path)
         self.defalut_hash_dict = {
             "p_hash": self.make_hash(HashType.PERCEPTIVE_HASH, self.HASH_SIZE).__str__(),
             "d_hash": self.make_hash(HashType.DIFFERENCE_HASH, self.HASH_SIZE).__str__(),
