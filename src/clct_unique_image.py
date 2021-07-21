@@ -12,6 +12,8 @@ import shutil
 from datetime import datetime, timedelta
 from pandas import date_range
 
+from util import convert_image_insert
+
 if __name__ == "__main__":
     stime = time.time()  # 시작시간
     results = []

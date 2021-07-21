@@ -9,11 +9,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y && apt-get install -y vim
 # copy the dependencies file to the working directory
 COPY requirements.txt .
-
-RUN pip install update
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host ftp.daumkakao.com -r requirements.txt
-
 # Copy the current directory contents into the container at /app
 COPY . /app
 

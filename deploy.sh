@@ -24,7 +24,7 @@ RUN_COMMAND="docker run -d --name $CONTAINER_NAME $APP_NAME:$VERSION /bin/bash -
 # TODO: 20서버 기준
 # container 중지시 삭제
 #docker run -d -e "TZ=Asia/Seoul" --rm -v D:\spsp:/app/public --name palette alkaline2018/palette:1.0.1 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
-# restart 시에도 container 유지
+# HINT: restart 시에도 container 유지 *** 밑에 것을 사용 할 것
 #docker run -d --restart=always -e "TZ=Asia/Seoul" -v D:\spsp:/app/public --name palette alkaline2018/palette:1.0.1 /bin/bash -c "while true; do echo 1hour live;sleep 3600; done"
 STOP_COMMAND="docker stop $CONTAINER_NAME"
 
@@ -41,6 +41,7 @@ echo "STOP_COMMAND:" $STOP_COMMAND
 
 #echo stop motion
 #read motino
+# NOTE: 실행되는 내용
 echo "---------build & push---------"
 
 docker build -t $APP_NAME:$VERSION .
